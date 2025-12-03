@@ -1,5 +1,5 @@
 #let project = "project"
-#let purpose = [*purpose*]
+#let purpose = [#underline[*purpose*]]
 #let spec_section = "spec section"
 #let engineer = "engineer"
 #let contractor = "contractor"
@@ -10,12 +10,16 @@
 )
 
 #set page(
-  header: [
-    #image("./images/SL_Header.png", width: 100%)
-  ],
-  footer: [
-    #image("./images/SL_Footer.png", width: 100%)
-  ],
+  header: context {
+      if here().page() == 1 [
+        #image("./images/SL_Header.png", width: 100%)
+      ]
+  },
+  footer: context {
+    if here().page() == 1 [
+     #image("./images/SL_Footer.png", width: 100%)
+   ]
+  },
   paper: "us-letter",
   margin: (top: 2in, bottom: 2in)
 )
@@ -28,9 +32,9 @@
 
 #align(center)[
   #upper[#project] \
-
+\
   #upper[#purpose] \
-
+\
   #upper[#spec_section]
 ]
 
@@ -43,3 +47,5 @@ ENGINEER: #upper[#engineer]
 
 CONTRACTOR: #upper[#contractor]
 ]
+#pagebreak()
+this
