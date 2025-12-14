@@ -31,11 +31,11 @@
 \
 
 #align(center)[
-  #upper[#project] \
+  #upper[*#project*] \
 \
   #upper[#purpose] \
 \
-  #upper[#spec_section]
+  #upper[*#spec_section*]
 ]
 
 #align(center + horizon)[
@@ -47,5 +47,61 @@ ENGINEER: #upper[#engineer]
 
 CONTRACTOR: #upper[#contractor]
 ]
+
 #pagebreak()
-this
+
+#align(center)[
+  #upper[*#project*]
+
+  Table of Contents
+]
+\
+#link(<Comments>)[*Comments*] \
+\
+#link(<PartsIndex>)[*Parts Index*] \ 
+\
+#link(<DataSheets>)[*Data Sheets*] \
+\
+#link(<DrawingIndex>)[*Drawing Index*] \
+\
+#link(<Drawings>)[*Drawings*] \
+
+#pagebreak()
+
+#align(center)[
+  #upper[*#project*]
+]
+\
+\
+General Comments: <Comments>
+
+#pagebreak()
+
+#align(center)[
+  Parts Index: <PartsIndex>
+]
+
+#pagebreak()
+
+#align(center)[
+  #upper[*#project*]
+] <DataSheets>
+
+#pagebreak()
+
+#align(center)[
+  #upper[*#project*]
+]
+
+\
+Drawings Index:<DrawingIndex>
+
+#pagebreak()
+
+#align(center)[
+  #upper[*#project*]
+]
+
+\
+Drawings:<Drawings>
+
