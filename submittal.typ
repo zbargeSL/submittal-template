@@ -78,8 +78,25 @@ General Comments: <Comments>
 #pagebreak()
 
 #align(center)[
-  Parts Index: <PartsIndex>
+  *Parts Index:* <PartsIndex>
 ]
+
+#let parts_row = ()
+
+#{
+ parts_row = components.map((c) => ([#link(label(str(c.sheet)))[#c.sheet]], c.manufacturer, c.catalog, c.description)).flatten()
+}
+
+#{
+  set text(size: 10pt)
+
+  table(
+    columns: (auto, 1fr, 1fr, 1fr),
+    align:(center), 
+    table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
+    ..parts_row,
+  )
+}
 
 #pagebreak()
 
@@ -87,14 +104,49 @@ General Comments: <Comments>
   #upper[*#project*]
 ] <DataSheets>
 
-#pagebreak()
+#let sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description \ Model Number: #c.catalog \ \ Tags/Service: \ #c.tags.join(", ") / #service \ \ Specifications: \ #c.specs]))
+
+#let tables_data = ("1": ())
+
+#{
+  for (i, component) in components.enumerate() {
+    let key = str(component.qty)
+
+    if (key in tables_data) {
+      tables_data.at(key).push(sheet_rows.at(i))
+    } else {
+      tables_data.insert(key, sheet_rows.at(i))
+    }
+  }
+}
+
+#for (sheet, details) in tables_data {
+  table(
+    columns: (auto, 1fr),
+    align: (center, left),
+    table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[Data Sheet #sheet#label(sheet)]],
+    align(left)[Customer: \ Reference: \ Date: ], [#contractor \ #reference \ #datetime.today().display("[month]/[day]/[year]")],
+    [#underline[Qty] \ \ ], [#underline[Description] \ \ ],
+    ..details.flatten(),
+  ) 
+
+  pagebreak()
+}
 
 #align(center)[
   #upper[*#project*]
 ]
-
 \
-Drawings Index:<DrawingIndex>
+*Drawings Index*:<DrawingIndex>
+
+#{
+  set text(size: 10pt)
+
+  table(
+    columns: (1fr, 3fr),
+    table.header([*Drawing Number*], [*Drawing Description*]),
+  )
+}
 
 #pagebreak()
 
