@@ -1,8 +1,5 @@
-#let project = "project"
-#let purpose = [#underline[*purpose*]]
-#let spec_section = "spec section"
-#let engineer = "engineer"
-#let contractor = "contractor"
+#import "definitions.typ": *
+#import "components.typ": *
 
 #set text(
   size: 14pt,
