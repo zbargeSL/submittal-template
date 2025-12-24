@@ -36,13 +36,13 @@
 ]
 
 #align(center + horizon)[
-  #datetime.today().display("[month repr:long] [day], [year]")
+  *#datetime.today().display("[month repr:long] [day], [year]")*
 ]
 
 #align(bottom)[
-ENGINEER: #upper[#engineer]
+*ENGINEER: #upper[#engineer]*
 
-CONTRACTOR: #upper[#contractor]
+*CONTRACTOR: #upper[#contractor]*
 ]
 
 #pagebreak()
