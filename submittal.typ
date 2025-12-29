@@ -154,7 +154,7 @@ General Comments: <Comments>
   \
   Mfg: Phoenix Contact: Terminal Anchor \ Model Number: E/NS 35 N \
   \
-  Tags / Service: \  / #service \
+  Tags / Service: \ #term_blocks / #service \
   \
   Specifications: \
   #list(

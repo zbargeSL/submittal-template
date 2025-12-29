@@ -8,6 +8,8 @@
 #let service = "service"
 #let reference = "reference"
 
+#let term_blocks = [TB-AC]
+
 #let component = e.types.declare(
   "component",
   doc: "data for component used in instrument/panel",
