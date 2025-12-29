@@ -8,11 +8,10 @@
     sheet: 1,
     description: "test",
     tags: ("test", "test1"),
-    specs: [
-      - test,
-      - fdjalkfda,
-      \
-    ],
+    specs: (
+      [test],
+      [fdjalkfda],
+    ),
   ),
   component(
     manufacturer: "test",
@@ -21,11 +20,10 @@
     sheet: 1,
     description: "test",
     tags: ("test", "test1"),
-    specs: [
-      - test,
-      - fdjalkfda,
-      \
-    ],
+    specs: (
+      [test],
+      [fdjalkfda],
+    ),
   ),
   component(
     manufacturer: "test1",
@@ -34,10 +32,9 @@
     sheet: 2,
     description: "test1",
     tags: ("test2", "test3"),
-    specs: [
-      - test1,
-      - nmcncx
-      \
-    ],
+    specs: (
+      [test1],
+      [nmcncx],
+    ),
   ),
 )
