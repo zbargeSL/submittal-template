@@ -10,6 +10,10 @@
 
 #let term_blocks = [TB-AC]
 
+#let drawings = (
+  "D-01": "ENCLOSURE EXT. LAYOUT"
+)
+
 #let component = e.types.declare(
   "component",
   doc: "data for component used in instrument/panel",

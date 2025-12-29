@@ -182,6 +182,7 @@ General Comments: <Comments>
     columns: (1fr, 3fr),
     align: (center, left),
     table.header(align(left)[*Drawing Number*], [*Drawing Description*]),
+    ..drawings.pairs().flatten()
   )
 }
 
