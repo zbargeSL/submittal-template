@@ -79,9 +79,15 @@ General Comments: <Comments>
 ]
 
 #let parts_row = ()
+#let last_sheet
 
 #{
- parts_row = components.map((c) => ([#link(label(str(c.sheet)))[#c.sheet]], c.manufacturer, c.catalog, c.description)).flatten()
+  let comp
+  for component in components {
+    comp = ([#link(label(str(component.sheet)))[#component.sheet]], component.manufacturer, component.catalog, component.description)
+    parts_row.push(comp)
+    last_sheet = component.sheet + 1
+  }
 }
 
 #{
@@ -91,7 +97,7 @@ General Comments: <Comments>
     columns: (auto, 1fr, 1fr, 1fr),
     align:(center), 
     table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
-    ..parts_row,
+    ..parts_row.flatten(),
   )
 }
 
