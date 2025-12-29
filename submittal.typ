@@ -18,32 +18,35 @@
    ]
   },
   paper: "us-letter",
-  margin: (top: 2in, bottom: 2in)
 )
 
 #set par(
   justify: true
 )
 
-\
+#{
+  set page(
+    margin: (top: 2in, bottom: 2in)
+  )
 
-#align(center)[
-  #upper[*#project*] \
-\
-  #upper[#purpose] \
-\
-  #upper[*#spec_section*]
-]
+  align(center)[
+    #upper[*#project*] \
+  \
+    #upper[#purpose] \
+  \
+    #upper[*#spec_section*]
+  ]
 
-#align(center + horizon)[
-  *#datetime.today().display("[month repr:long] [day], [year]")*
-]
+  align(center + horizon)[
+    *#datetime.today().display("[month repr:long] [day], [year]")*
+  ]
 
-#align(bottom)[
-*ENGINEER: #upper[#engineer]*
+  align(bottom)[
+  *ENGINEER: #upper[#engineer]*
 
-*CONTRACTOR: #upper[#contractor]*
-]
+  *CONTRACTOR: #upper[#contractor]*
+  ]
+}
 
 #pagebreak()
 
@@ -131,7 +134,7 @@ General Comments: <Comments>
   table(
     columns: (auto, 1fr),
     align: (center, left),
-    table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[Data Sheet #sheet#label(sheet)]],
+    table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #sheet#label(sheet)*]],
     align(left)[Customer: \ Reference: \ Date: ], [#contractor \ #reference \ #datetime.today().display("[month]/[day]/[year]")],
     [#underline[Qty] \ \ ], [#underline[Description] \ \ ],
     ..details.flatten(),
@@ -143,7 +146,7 @@ General Comments: <Comments>
 #table(
   columns: (auto, 1fr),
   align: (center, left),
-  table.cell(stroke: (left: none, top: none, right: none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[Data Sheet #last_sheet#label(str(last_sheet))]],
+  table.cell(stroke: (left: none, top: none, right: none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #last_sheet#label(str(last_sheet))*]],
   align(left)[Customer: \ Reference: \ Date: ], [#contractor \ #reference \ #datetime.today().display("[month]/[day]/[year]")],
   [#underline[Qty] \ \ ], [#underline[Description] \ \ ],
   [A/R \ \ \ A/R \ \ \ A/R \ \ \ A/R], [Mfg: Phoenix Contact: Terminal Block \ Model Number: UT 2,5 \
