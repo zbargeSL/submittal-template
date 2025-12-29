@@ -111,7 +111,7 @@ General Comments: <Comments>
   #upper[*#project*]
 ] <DataSheets>
 
-#let sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description \ Model Number: #c.catalog \ \ Tags/Service: \ #c.tags.join(", ") / #service \ \ Specifications: \ #c.specs]))
+#let sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description \ Model Number: #c.catalog \ \ Tags/Service: \ #c.tags.join(", ") / #service \ \ Specifications: \ #list(indent: 1em, ..c.specs)]))
 
 #let tables_data = ("1": ())
 

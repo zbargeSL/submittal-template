@@ -21,6 +21,6 @@
     field("sheet", int, doc: "Sheet number that cut sheet is on", required: true, named: true),
     field("description", str, doc: "Part description", required: true, named: true),
     field("tags", array, doc: "Tags used for part number", required: true, named: true),
-    field("specs", types.option(content), doc: "Specifications for part", required: true, named: true),
+    field("specs", array, doc: "Specifications for part", required: true, named: true),
   ),
 )
