@@ -180,7 +180,8 @@ General Comments: <Comments>
 
   table(
     columns: (1fr, 3fr),
-    table.header([*Drawing Number*], [*Drawing Description*]),
+    align: (center, left),
+    table.header(align(left)[*Drawing Number*], [*Drawing Description*]),
   )
 }
 
