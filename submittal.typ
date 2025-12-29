@@ -117,7 +117,7 @@ General Comments: <Comments>
 
 #{
   for (i, component) in components.enumerate() {
-    let key = str(component.qty)
+    let key = str(component.sheet)
 
     if (key in tables_data) {
       tables_data.at(key).push(sheet_rows.at(i))
