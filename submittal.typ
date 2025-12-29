@@ -98,6 +98,10 @@ General Comments: <Comments>
     align:(center), 
     table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
     ..parts_row.flatten(),
+    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [UT 2,5], [Terminal Block],
+    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [UT 2,5-PE], [Grounding Terminal Block],
+    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [D-UT 2,5-10], [Terminal End Barrier],
+    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [E/NS 35 N], [Terminal Anchor],
   )
 }
 
@@ -135,6 +139,35 @@ General Comments: <Comments>
 
   pagebreak()
 }
+
+#table(
+  columns: (auto, 1fr),
+  align: (center, left),
+  table.cell(stroke: (left: none, top: none, right: none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[Data Sheet #last_sheet#label(str(last_sheet))]],
+  align(left)[Customer: \ Reference: \ Date: ], [#contractor \ #reference \ #datetime.today().display("[month]/[day]/[year]")],
+  [#underline[Qty] \ \ ], [#underline[Description] \ \ ],
+  [A/R \ \ \ A/R \ \ \ A/R \ \ \ A/R], [Mfg: Phoenix Contact: Terminal Block \ Model Number: UT 2,5 \
+  \
+  Mfg: Phoenix Contact: Grounding Terminal Block \ Model Number: UT 2,5-PE \ 
+  \
+  Mfg: Phoenix Contact: Terminal End Barrier \ Model Number: D-UT 2,5-10 \
+  \
+  Mfg: Phoenix Contact: Terminal Anchor \ Model Number: E/NS 35 N \
+  \
+  Tags / Service: \  / #service \
+  \
+  Specifications: \
+  #list(
+    indent: 1em,
+     [Feed through and grounding terminals],
+     [Screw clamps], 
+     [End plates and anchors],
+     [DIN rail mount],
+   ) 
+  ],
+)
+
+#pagebreak()
 
 #align(center)[
   #upper[*#project*]
