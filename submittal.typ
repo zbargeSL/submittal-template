@@ -75,6 +75,10 @@
 \
 General Comments: <Comments>
 
+#for comment in comments{
+  [+ #comment \ \ ]
+}
+
 #pagebreak()
 
 #align(center)[
