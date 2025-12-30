@@ -98,7 +98,7 @@ General Comments: <Comments>
 
   table(
     columns: (auto, 1fr, 1fr, 1fr),
-    align:(center), 
+    align:(center + horizon), 
     table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
     ..parts_row.flatten(),
     [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [UT 2,5], [Terminal Block],
