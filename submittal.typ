@@ -60,12 +60,16 @@
 \
 #link(<PartsIndex>)[*Parts Index*] \ 
 \
+#if has_spare_parts [
+  #link(<SparePartsIndex>)[*Spare Parts Index*] \
+  \
+]
 #link(<DataSheets>)[*Data Sheets*] \
 \
 #if not is_instrument_submittal [
-#link(<DrawingIndex>)[*Drawing Index*] \
-\
-#link(<Drawings>)[*Drawings*] \
+  #link(<DrawingIndex>)[*Drawing Index*] \
+  \
+  #link(<Drawings>)[*Drawings*] \
 ]
 
 #pagebreak()
@@ -115,6 +119,36 @@ General Comments: <Comments>
 }
 
 #pagebreak()
+
+#if has_spare_parts [
+  #let spare_parts_rows = ()
+
+  #for spare_component in spare_parts {
+    spare_parts_rows.push(parts_row.filter(comp => comp.contains(spare_component.catalog)))
+    spare_parts_rows.last().push(spare_parts_qty.at(spare_component.catalog))
+  }
+
+  #align(center)[*#upper(project)*]
+
+  #{
+    set text(size: 12pt)
+    [*Spare Parts Index:* <SparePartsIndex>]
+  }
+
+  #v(.3em, weak: true)
+  #{
+    set text(size: 10pt)
+
+    table(
+      columns: (auto, 1fr, 1fr, 1fr, 1fr),
+      align:(center + horizon), 
+      table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*], [*QTY*]),
+      ..spare_parts_rows.flatten(),
+    )
+  }
+
+  #pagebreak()
+]
 
 #align(center)[
   #upper[*#project*]

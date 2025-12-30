@@ -9,6 +9,7 @@
 #let reference = "reference"
 
 #let is_instrument_submittal = false
+#let has_spare_parts = true
 
 #let term_blocks = [TB-AC]
 
