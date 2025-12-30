@@ -62,9 +62,11 @@
 \
 #link(<DataSheets>)[*Data Sheets*] \
 \
+#if not is_instrument_submittal [
 #link(<DrawingIndex>)[*Drawing Index*] \
 \
 #link(<Drawings>)[*Drawings*] \
+]
 
 #pagebreak()
 
@@ -174,31 +176,33 @@ General Comments: <Comments>
   ], 
 )
 
-#pagebreak()
+#if not is_instrument_submittal [
 
-#align(center)[
-  #upper[*#project*]
+  #pagebreak()
+
+  #align(center)[
+    #upper[*#project*]
+  ]
+  \
+  *Drawings Index*:<DrawingIndex>
+
+  #{
+    set text(size: 10pt)
+
+    table(
+      columns: (1fr, 3fr),
+      align: (center, left),
+      table.header(align(left)[*Drawing Number*], [*Drawing Description*]),
+      ..drawings.pairs().flatten()
+    )
+  }
+
+  #pagebreak()
+
+  #align(center)[
+    #upper[*#project*]
+  ]
+
+  \
+  Drawings:<Drawings>
 ]
-\
-*Drawings Index*:<DrawingIndex>
-
-#{
-  set text(size: 10pt)
-
-  table(
-    columns: (1fr, 3fr),
-    align: (center, left),
-    table.header(align(left)[*Drawing Number*], [*Drawing Description*]),
-    ..drawings.pairs().flatten()
-  )
-}
-
-#pagebreak()
-
-#align(center)[
-  #upper[*#project*]
-]
-
-\
-Drawings:<Drawings>
-

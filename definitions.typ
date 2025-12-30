@@ -8,6 +8,8 @@
 #let service = "service"
 #let reference = "reference"
 
+#let is_instrument_submittal = false
+
 #let term_blocks = [TB-AC]
 
 #let drawings = (
