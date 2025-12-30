@@ -4,7 +4,7 @@
   component(
     manufacturer: "test",
     catalog: "test",
-    qty: 1,
+    qty: "1",
     sheet: 1,
     description: "test",
     tags: ("test", "test1"),
@@ -16,7 +16,7 @@
   component(
     manufacturer: "test",
     catalog: "test",
-    qty: 1,
+    qty: "1",
     sheet: 1,
     description: "test",
     tags: ("test", "test1"),
@@ -28,7 +28,7 @@
   component(
     manufacturer: "test1",
     catalog: "test1",
-    qty: 2,
+    qty: "2",
     sheet: 2,
     description: "test1",
     tags: ("test2", "test3"),

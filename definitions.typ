@@ -28,7 +28,7 @@
   fields: (
     field("manufacturer", str, doc: "Manufacturer Name", required: true, named: true),
     field("catalog", str, doc: "Part catalog number", required: true, named: true),
-    field("qty", int, doc: "Part quantity", required: true, named: true),
+    field("qty", str, doc: "Part quantity", required: true, named: true),
     field("sheet", int, doc: "Sheet number that cut sheet is on", required: true, named: true),
     field("description", str, doc: "Part description", required: true, named: true),
     field("tags", array, doc: "Tags used for part number", required: true, named: true),
