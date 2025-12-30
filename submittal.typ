@@ -166,8 +166,8 @@ General Comments: <Comments>
      [Screw clamps], 
      [End plates and anchors],
      [DIN rail mount],
-   ) 
-  ],
+   ) \
+  ], 
 )
 
 #pagebreak()
