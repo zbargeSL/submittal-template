@@ -66,6 +66,10 @@
 ]
 #link(<DataSheets>)[*Data Sheets*] \
 \
+#if has_heating_calc [
+  #link(<HeatingAndCoolingSizes>)[*Heating and Cooling Sizes*] \
+  \ 
+]
 #if not is_instrument_submittal [
   #link(<DrawingIndex>)[*Drawing Index*] \
   \
@@ -210,15 +214,48 @@ General Comments: <Comments>
   ], 
 )
 
-#if not is_instrument_submittal [
+#pagebreak()
+
+#if has_heating_calc [
+  #align(center)[
+    #upper[*#project*]
+  ]
+
+  *Heating and Cooling Sizes:*<HeatingAndCoolingSizes>
+
+  #align(center,
+  [
+    #table(
+      columns: (auto, 40%),
+      inset: (x, y) =>
+        if x == 0 and y <= heat_dissapated.len() { (right: 2em, left: 0% + 5pt, top: 0% + 5pt, bottom: 0% + 5pt) } else { 0% + 5pt },  
+      align: (x, y) =>
+        if y < heat_dissapated.len() and x == 0 {left}
+        else if x > 0 { center } else { right }
+      ,
+      stroke: (x, y) => (
+        top: if y == 0 or (y == heat_dissapated.len() + 1 and x == 1) { 1pt },
+        right: if x == 1 { 1pt },
+        left: if x == 0 { 1pt },
+        bottom: if y == 0 or y == heat_dissapated.len() + 1 { 1pt }
+      ),
+      [ Device \ \ ], [ HEAT DISSIPATED \ \ ],
+      ..heat_dissapated.pairs().flatten(),
+      [Total], [#heat_dissapated.values().map(val => float(val)).sum()]
+    )
+  ])
 
   #pagebreak()
+
+]
+
+#if not is_instrument_submittal [
 
   #align(center)[
     #upper[*#project*]
   ]
   \
-  *Drawings Index*:<DrawingIndex>
+  *Drawings Index:*<DrawingIndex>
 
   #{
     set text(size: 10pt)

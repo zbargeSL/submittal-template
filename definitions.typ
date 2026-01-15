@@ -10,6 +10,7 @@
 
 #let is_instrument_submittal = false
 #let has_spare_parts = true
+#let has_heating_calc = false
 
 #let term_blocks = [TB-AC]
 
@@ -20,6 +21,12 @@
 #let comments = (
   "test comment 1",
   "test comment 2"
+)
+
+#let heat_dissapated = (
+  "UPS": "225",
+  "DC Power Supplies": "112.5",
+  "Digital Input Modules": "139.12",
 )
 
 #let component = e.types.declare(
