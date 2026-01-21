@@ -20,10 +20,6 @@
   paper: "us-letter",
 )
 
-#set par(
-  justify: true
-)
-
 #{
   set page(
     margin: (top: 2in, bottom: 2in)
