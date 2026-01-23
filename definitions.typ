@@ -41,5 +41,6 @@
     field("description", str, doc: "Part description", required: true, named: true),
     field("tags", array, doc: "Tags used for part number", required: true, named: true),
     field("specs", array, doc: "Specifications for part", required: true, named: true),
+    field("service", str, doc: "Service for instrument", required: false, named: true)
   ),
 )

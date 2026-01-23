@@ -20,6 +20,8 @@
   paper: "us-letter",
 )
 
+#set pagebreak(weak: true)
+
 #{
   set page(
     margin: (top: 2in, bottom: 2in)
@@ -106,6 +108,7 @@ General Comments: <Comments>
 #{
   set text(size: 10pt)
 
+  if is_instrument_submittal {
   table(
     columns: (auto, 1fr, 1fr, 1fr),
     align:(center + horizon), 
@@ -116,6 +119,14 @@ General Comments: <Comments>
     [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [D-UT 2,5-10], [Terminal End Barrier],
     [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [E/NS 35 N], [Terminal Anchor],
   )
+  } else {
+    table(
+      columns: (auto, 1fr, 1fr, 1fr),
+      align:(center + horizon), 
+      table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
+      ..parts_row.flatten(),
+    )
+  }
 }
 
 #pagebreak()
@@ -154,7 +165,13 @@ General Comments: <Comments>
   #upper[*#project*]
 ] <DataSheets>
 
-#let sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description \ Model Number: #c.catalog \ \ Tags/Service: \ #c.tags.join(", ") / #service \ \ Specifications: \ #list(indent: 1em, ..c.specs) \ ] ))
+#let sheet_rows = ()
+
+#if is_instrument_submittal{
+  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description \ Model Number: #c.catalog \ \ Tags/Service: \ #c.tags.join(", ") / #c.service \ \ Specifications: \ #list(indent: 1em, ..c.specs) \ ] ))
+} else {
+  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description \ Model Number: #c.catalog \ \ Tags/Service: \ #c.tags.join(", ") / #service \ \ Specifications: \ #list(indent: 1em, ..c.specs) \ ] ))
+}
 
 #let tables_data = ("1": ())
 
@@ -183,34 +200,36 @@ General Comments: <Comments>
   pagebreak()
 }
 
-#table(
-  columns: (auto, 1fr),
-  align: (center, left),
-  table.cell(stroke: (left: none, top: none, right: none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #last_sheet#label(str(last_sheet))*]],
-  align(left)[Customer: \ Reference: \ Date: ], [#contractor \ #reference \ #datetime.today().display("[month]/[day]/[year]")],
-  [#underline[Qty] \ \ ], [#underline[Description] \ \ ],
-  [A/R \ \ \ A/R \ \ \ A/R \ \ \ A/R], [Mfg: Phoenix Contact: Terminal Block \ Model Number: 3044076 \
-  \
-  Mfg: Phoenix Contact: Grounding Terminal Block \ Model Number: 3044092 \ 
-  \
-  Mfg: Phoenix Contact: Terminal End Barrier \ Model Number: 3047028 \
-  \
-  Mfg: Phoenix Contact: Terminal Anchor \ Model Number: 0800886 \
-  \
-  Tags / Service: \ #term_blocks / #service \
-  \
-  Specifications: \
-  #list(
-    indent: 1em,
-     [Feed through and grounding terminals],
-     [Screw clamps], 
-     [End plates and anchors],
-     [DIN rail mount],
-   ) \
-  ], 
-)
+#if is_instrument_submittal {
+  table(
+    columns: (auto, 1fr),
+    align: (center, left),
+    table.cell(stroke: (left: none, top: none, right: none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #last_sheet#label(str(last_sheet))*]],
+    align(left)[Customer: \ Reference: \ Date: ], [#contractor \ #reference \ #datetime.today().display("[month]/[day]/[year]")],
+    [#underline[Qty] \ \ ], [#underline[Description] \ \ ],
+    [A/R \ \ \ A/R \ \ \ A/R \ \ \ A/R], [Mfg: Phoenix Contact: Terminal Block \ Model Number: 3044076 \
+    \
+    Mfg: Phoenix Contact: Grounding Terminal Block \ Model Number: 3044092 \ 
+    \
+    Mfg: Phoenix Contact: Terminal End Barrier \ Model Number: 3047028 \
+    \
+    Mfg: Phoenix Contact: Terminal Anchor \ Model Number: 0800886 \
+    \
+    Tags / Service: \ #term_blocks / #service \
+    \
+    Specifications: \
+    #list(
+      indent: 1em,
+       [Feed through and grounding terminals],
+       [Screw clamps], 
+       [End plates and anchors],
+       [DIN rail mount],
+     ) \
+    ], 
+  )
 
-#pagebreak()
+  pagebreak()
+}
 
 #if has_heating_calc [
   #align(center)[
