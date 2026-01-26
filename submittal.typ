@@ -114,10 +114,10 @@ General Comments: <Comments>
     align:(center + horizon), 
     table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
     ..parts_row.flatten(),
-    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [UT 2,5], [Terminal Block],
-    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [UT 2,5-PE], [Grounding Terminal Block],
-    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [D-UT 2,5-10], [Terminal End Barrier],
-    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [E/NS 35 N], [Terminal Anchor],
+    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3044076], [Terminal Block],
+    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3044092], [Grounding Terminal Block],
+    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3047028], [Terminal End Barrier],
+    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [0800886], [Terminal Anchor],
   )
   } else {
     table(
