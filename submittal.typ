@@ -254,7 +254,7 @@ General Comments: <Comments>
         left: if x == 0 { 1pt },
         bottom: if y == 0 or y == heat_dissapated.len() + 1 { 1pt }
       ),
-      [ Device \ \ ], [ HEAT DISSIPATED \ \ ],
+      [ Device \ \ ], [ HEAT DISSIPATED \ (BTU/Hr) \ ],
       ..heat_dissapated.pairs().flatten(),
       [Total], [#heat_dissapated.values().map(val => float(val)).sum()]
     )
