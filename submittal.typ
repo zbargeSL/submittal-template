@@ -28,10 +28,12 @@
   )
 
   align(center)[
-    #upper[*#project*] \
-  \
-    #upper[#purpose] \
-  \
+    #upper[*#project*] 
+
+    #linebreak()
+    #upper[#purpose]
+
+    #linebreak()
     #upper[*#spec_section*]
   ]
 
@@ -53,25 +55,30 @@
 
   Table of Contents
 ]
-\
-#link(<Comments>)[*Comments*] \
-\
-#link(<PartsIndex>)[*Parts Index*] \ 
-\
+#linebreak()
+#link(<Comments>)[*Comments*] 
+
+#linebreak()
+#link(<PartsIndex>)[*Parts Index*]
+
 #if has_spare_parts [
-  #link(<SparePartsIndex>)[*Spare Parts Index*] \
-  \
+  #linebreak()
+  #link(<SparePartsIndex>)[*Spare Parts Index*]
 ]
-#link(<DataSheets>)[*Data Sheets*] \
-\
+
+#linebreak()
+#link(<DataSheets>)[*Data Sheets*] 
+
 #if has_heating_calc [
-  #link(<HeatingAndCoolingSizes>)[*Heating and Cooling Sizes*] \
-  \ 
+  #linebreak()
+  #link(<HeatingAndCoolingSizes>)[*Heating and Cooling Sizes*]
 ]
 #if not is_instrument_submittal [
-  #link(<DrawingIndex>)[*Drawing Index*] \
-  \
-  #link(<Drawings>)[*Drawings*] \
+  #linebreak()
+  #link(<DrawingIndex>)[*Drawing Index*]
+
+  #linebreak()
+  #link(<Drawings>)[*Drawings*]
 ]
 
 #pagebreak()
@@ -79,12 +86,13 @@
 #align(center)[
   #upper[*#project*]
 ]
-\
-\
+
+#linebreak()
+#linebreak()
 General Comments: <Comments>
 
 #for comment in comments{
-  [+ #comment \ \ ]
+  [+ #comment #linebreak()#linebreak()]
 }
 
 #pagebreak()
@@ -109,16 +117,16 @@ General Comments: <Comments>
   set text(size: 10pt)
 
   if not is_instrument_submittal {
-  table(
-    columns: (auto, 1fr, 1fr, 1fr),
-    align:(center + horizon), 
-    table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
-    ..parts_row.flatten(),
-    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3044076], [Terminal Block],
-    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3044092], [Grounding Terminal Block],
-    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3047028], [Terminal End Barrier],
-    [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [0800886], [Terminal Anchor],
-  )
+    table(
+      columns: (auto, 1fr, 1fr, 1fr),
+      align:(center + horizon), 
+      table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
+      ..parts_row.flatten(),
+      [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3044076], [Terminal Block],
+      [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3044092], [Grounding Terminal Block],
+      [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3047028], [Terminal End Barrier],
+      [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [0800886], [Terminal Anchor],
+    )
   } else {
     table(
       columns: (auto, 1fr, 1fr, 1fr),
@@ -168,9 +176,9 @@ General Comments: <Comments>
 #let sheet_rows = ()
 
 #if is_instrument_submittal{
-  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description \ Model Number: #c.catalog \ \ Tags/Service: \ #c.tags.join(", ") / #c.service \ \ Specifications: \ #list(indent: 1em, ..c.specs) \ ] ))
+  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #c.service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() ] ))
 } else {
-  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description \ Model Number: #c.catalog \ \ Tags/Service: \ #c.tags.join(", ") / #service \ \ Specifications: \ #list(indent: 1em, ..c.specs) \ ] ))
+  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() ] ))
 }
 
 #let tables_data = ("1": ())
@@ -192,8 +200,8 @@ General Comments: <Comments>
     columns: (auto, 1fr),
     align: (center, left),
     table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #sheet#label(sheet)*]],
-    align(left)[Customer: \ Reference: \ Date: ], [#contractor \ #reference \ #datetime.today().display("[month]/[day]/[year]")],
-    [#underline[Qty] \ \ ], [#underline[Description] \ \ ],
+    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
+    [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
     ..details.flatten(),
   ) 
 
@@ -205,26 +213,27 @@ General Comments: <Comments>
     columns: (auto, 1fr),
     align: (center, left),
     table.cell(stroke: (left: none, top: none, right: none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #last_sheet#label(str(last_sheet))*]],
-    align(left)[Customer: \ Reference: \ Date: ], [#contractor \ #reference \ #datetime.today().display("[month]/[day]/[year]")],
-    [#underline[Qty] \ \ ], [#underline[Description] \ \ ],
-    [A/R \ \ \ A/R \ \ \ A/R \ \ \ A/R], [Mfg: Phoenix Contact: Terminal Block \ Model Number: 3044076 \
-    \
-    Mfg: Phoenix Contact: Grounding Terminal Block \ Model Number: 3044092 \ 
-    \
-    Mfg: Phoenix Contact: Terminal End Barrier \ Model Number: 3047028 \
-    \
-    Mfg: Phoenix Contact: Terminal Anchor \ Model Number: 0800886 \
-    \
-    Tags / Service: \ #term_blocks / #service \
-    \
-    Specifications: \
+    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
+    [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
+    [A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R], [Mfg: Phoenix Contact: Terminal Block #linebreak() Model Number: 3044076 #linebreak()
+    #linebreak()
+    Mfg: Phoenix Contact: Grounding Terminal Block #linebreak() Model Number: 3044092 #linebreak()
+    #linebreak()
+    Mfg: Phoenix Contact: Terminal End Barrier #linebreak() Model Number: 3047028 #linebreak()
+    #linebreak()
+    Mfg: Phoenix Contact: Terminal Anchor #linebreak() Model Number: 0800886 #linebreak()
+    #linebreak()
+    Tags / Service: #linebreak() #term_blocks / #service #linebreak()
+    #linebreak()
+    Specifications: #linebreak()
     #list(
       indent: 1em,
        [Feed through and grounding terminals],
        [Screw clamps], 
        [End plates and anchors],
        [DIN rail mount],
-     ) \
+     )
+     #linebreak()
     ], 
   )
 
@@ -254,7 +263,7 @@ General Comments: <Comments>
         left: if x == 0 { 1pt },
         bottom: if y == 0 or y == heat_dissapated.len() + 1 { 1pt }
       ),
-      [ Device \ \ ], [ HEAT DISSIPATED \ (BTU/Hr) \ ],
+      [ Device #linebreak() #linebreak() ], [ HEAT DISSIPATED #linebreak() (BTU/Hr) #linebreak() ],
       ..heat_dissapated.pairs().flatten(),
       [Total], [#heat_dissapated.values().map(val => float(val)).sum()]
     )
@@ -269,7 +278,7 @@ General Comments: <Comments>
   #align(center)[
     #upper[*#project*]
   ]
-  \
+  #linebreak()
   *Drawings Index:*<DrawingIndex>
 
   #{
@@ -289,6 +298,6 @@ General Comments: <Comments>
     #upper[*#project*]
   ]
 
-  \
+  #linebreak()
   Drawings:<Drawings>
 ]
