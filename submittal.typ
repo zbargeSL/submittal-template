@@ -108,7 +108,7 @@ General Comments: <Comments>
 #{
   set text(size: 10pt)
 
-  if is_instrument_submittal {
+  if not is_instrument_submittal {
   table(
     columns: (auto, 1fr, 1fr, 1fr),
     align:(center + horizon), 
@@ -200,7 +200,7 @@ General Comments: <Comments>
   pagebreak()
 }
 
-#if is_instrument_submittal {
+#if not is_instrument_submittal {
   table(
     columns: (auto, 1fr),
     align: (center, left),
