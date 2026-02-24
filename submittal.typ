@@ -89,11 +89,19 @@
 
 #linebreak()
 #linebreak()
-General Comments: <Comments>
+*General Comments: <Comments>*
 
-#for comment in comments{
+#for comment in comments {
   [+ #comment #linebreak()#linebreak()]
 }
+
+#if is_resubmittal [
+  *Resubmittal Comment Confirmations:*
+
+  #for (resub_comment, response) in resub_comments {
+    [+ #resub_comment #linebreak()#linebreak() *Sherwood Logan Response:* #linebreak()#linebreak() #response #linebreak()#linebreak()]
+  }
+]
 
 #pagebreak()
 
