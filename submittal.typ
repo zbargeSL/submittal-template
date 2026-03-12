@@ -72,6 +72,7 @@
 #if has_heating_calc [
   #linebreak()
   #link(<HeatingAndCoolingSizes>)[*Heating and Cooling Sizes*]
+
 ]
 #if not is_instrument_submittal [
   #linebreak()
@@ -186,7 +187,7 @@
 #if is_instrument_submittal{
   sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #c.service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() ] ))
 } else {
-  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() ] ))
+  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() #c.misc #linebreak()] ))
 }
 
 #let tables_data = ("1": ())

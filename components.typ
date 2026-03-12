@@ -12,6 +12,9 @@
       [spec 1],
       [spec 2],
     ),
+    misc: [
+      #gen_load_calc_table(("PWS1200",), 20, vdc_pws_components)
+    ]
   ),
   component(
     manufacturer: "manufacturer 2",
