@@ -97,7 +97,7 @@
 }
 
 #if is_resubmittal [
-  *Resubmittal Comment Confirmations:*
+  *Resubmittal \##resubmittal_number Comment Confirmations:*
 
   #for (resub_comment, response) in resub_comments {
     [+ #resub_comment #linebreak()#linebreak() *Sherwood Logan Response:* #linebreak()#linebreak() #response #linebreak()#linebreak()]

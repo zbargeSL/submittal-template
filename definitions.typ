@@ -18,6 +18,7 @@
 #let contractor = "contractor"
 #let service = "service"
 #let reference = "reference"
+#let resubmittal_number = ""
 
 
 #let term_blocks = [TB-AC]
