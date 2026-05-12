@@ -116,7 +116,13 @@
 #{
   let comp
   for component in components {
-    comp = ([#link(label(str(component.sheet)))[#component.sheet]], component.manufacturer, component.catalog, component.description)
+    let cat = component.catalog
+
+    if cat.len() > 20 {
+      cat = cat.slice(0, count:20) + sym.zws + cat.slice(20)
+    }
+
+    comp = ([#link(label(str(component.sheet)))[#component.sheet]], component.manufacturer, cat, component.description)
     parts_row.push(comp)
     last_sheet = component.sheet + 1
   }
