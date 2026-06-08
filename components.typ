@@ -18,7 +18,7 @@
   ),
   component(
     manufacturer: "manufacturer 2",
-    catalog: "test1",
+    catalog: "testtesttesttesttesttest",
     qty: "1",
     sheet: 1,
     description: "description 2",

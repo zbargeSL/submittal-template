@@ -55,8 +55,11 @@
 
   Table of Contents
 ]
-#linebreak()
-#link(<Comments>)[*Comments*] 
+
+#if comments.len() > 0 or is_resubmittal {
+  linebreak()
+  link(<Comments>)[*Comments*] 
+}
 
 #linebreak()
 #link(<PartsIndex>)[*Parts Index*]
@@ -88,12 +91,17 @@
   #upper[*#project*]
 ]
 
-#linebreak()
-#linebreak()
-*General Comments: <Comments>*
+#if comments.len() > 0 or is_resubmittal {
+  linebreak()
+  linebreak()
+}
 
-#for comment in comments {
-  [+ #comment #linebreak()#linebreak()]
+#if comments.len() > 0 {
+  [*General Comments: <Comments>*]
+
+  for comment in comments {
+    [+ #comment #linebreak()#linebreak()]
+  }
 }
 
 #if is_resubmittal [
@@ -115,18 +123,36 @@
 
 #{
   let comp
+  let cat
+  let test_cat
   for component in components {
-    let cat = component.catalog
+    if component.sheet == 1 {
+      test_cat = component.catalog
+    }
+    cat = component.catalog
 
-    if cat.len() > 20 {
-      cat = cat.slice(0, count:20) + sym.zws + cat.slice(20)
+    if test_cat.len() > 20 {
+      let num_breaks = calc.trunc(test_cat.len()/20)
+      [#num_breaks]
+      let i = 1
+      while i <= num_breaks {
+        test_cat = test_cat.slice(0, count:i*20) + sym.zws + test_cat.slice(i*20)
+        i = i + 1
+      }
     }
 
     comp = ([#link(label(str(component.sheet)))[#component.sheet]], component.manufacturer, cat, component.description)
     parts_row.push(comp)
     last_sheet = component.sheet + 1
   }
+    [#test_cat#linebreak()]
+    let uni
+    for char in test_cat {
+      uni = char.to-unicode()
+      [#char#uni#linebreak()]
+    }
 }
+
 
 #{
   set text(size: 10pt)
