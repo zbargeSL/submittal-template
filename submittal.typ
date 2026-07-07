@@ -133,7 +133,6 @@
 
     if test_cat.len() > 20 {
       let num_breaks = calc.trunc(test_cat.len()/20)
-      [#num_breaks]
       let i = 1
       while i <= num_breaks {
         test_cat = test_cat.slice(0, count:i*20) + sym.zws + test_cat.slice(i*20)
@@ -145,11 +144,9 @@
     parts_row.push(comp)
     last_sheet = component.sheet + 1
   }
-    [#test_cat#linebreak()]
     let uni
     for char in test_cat {
       uni = char.to-unicode()
-      [#char#uni#linebreak()]
     }
 }
 
