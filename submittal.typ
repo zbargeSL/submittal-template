@@ -9,12 +9,12 @@
 #set page(
   header: context {
       if here().page() == 1 [
-        #image("./images/SL_Header.png", width: 100%)
+        #image("./common/images/SL_Header.png", width: 100%)
       ]
   },
   footer: context {
     if here().page() == 1 [
-     #image("./images/SL_Footer.png", width: 100%)
+     #image("./common/images/SL_Footer.png", width: 100%)
    ]
   },
   paper: "us-letter",
