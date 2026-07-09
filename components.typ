@@ -1,4 +1,6 @@
-#import "definitions.typ": *
+#import "./common/types/component.typ": *
+#import "./common/functions/gen_load_calc_table.typ": *
+#import "./definitions.typ": *
 
 #let components = (
   component(
