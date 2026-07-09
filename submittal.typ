@@ -1,6 +1,7 @@
 #import "definitions.typ": *
 #import "components.typ": *
 
+
 #set text(
   size: 14pt,
   font: "Times New Roman"
@@ -121,15 +122,18 @@
 #let parts_row = ()
 #let last_sheet
 
+
 #{
   let comp
   let cat
   let test_cat
-  for component in components {
-    if component.sheet == 1 {
-      test_cat = component.catalog
+  for (part_file, part_data) in components {
+    import "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".typ": comp
+
+    if part_data.sheet == 1 {
+      test_cat = comp.catalog
     }
-    cat = component.catalog
+    cat = comp.catalog
 
     if test_cat.len() > 20 {
       let num_breaks = calc.trunc(test_cat.len()/20)
@@ -140,9 +144,9 @@
       }
     }
 
-    comp = ([#link(label(str(component.sheet)))[#component.sheet]], component.manufacturer, cat, component.description)
+    comp = ([#link(label(str(part_data.sheet)))[#part_data.sheet]], comp.manufacturer, cat, comp.description)
     parts_row.push(comp)
-    last_sheet = component.sheet + 1
+    last_sheet = part_data.sheet + 1
   }
     let uni
     for char in test_cat {
@@ -180,10 +184,10 @@
 #if has_spare_parts [
   #let spare_parts_rows = ()
 
-  #for spare_component in spare_parts {
-    spare_parts_rows.push(parts_row.filter(comp => comp.contains(spare_component.catalog)))
-    spare_parts_rows.last().push(spare_parts_qty.at(spare_component.catalog))
-  }
+  //#for spare_component in spare_parts {
+    //spare_parts_rows.push(parts_row.filter(comp => comp.contains(spare_component.catalog)))
+    //spare_parts_rows.last().push(spare_parts_qty.at(spare_component.catalog))
+  //}
 
   #align(center)[*#upper(project)*]
 
@@ -213,70 +217,106 @@
 
 #let sheet_rows = ()
 
-#if is_instrument_submittal{
-  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #c.service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() ] ))
-} else {
-  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() #c.misc #linebreak()] ))
-}
+//#if is_instrument_submittal{
+//  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #c.service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() ] ))
+//} else {
+//  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() #c.misc #linebreak()] ))
+//}
 
-#let tables_data = ("1": ())
+//#let tables_data = ("1": ())
 
 #{
-  for (i, component) in components.enumerate() {
-    let key = str(component.sheet)
+  for (part_file, part_data) in components {
+    import "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".typ": comp
 
-    if (key in tables_data) {
-      tables_data.at(key).push(sheet_rows.at(i))
-    } else {
-      tables_data.insert(key, sheet_rows.at(i))
+    let sheet_row = ([#part_data.qty], [Mfg: #comp.manufacturer: #comp.description #linebreak() Model Number: #comp.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #part_data.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..comp.specs) #linebreak() #comp.misc #linebreak()] )
+    table(
+      columns: (auto, 1fr),
+      align: (center, left),
+      table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #part_data.sheet#label(str(part_data.sheet))*]],
+      align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
+      [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
+      ..sheet_row.flatten(),
+    ) 
+
+    {
+      set page(margin: (top: 0in, bottom: 0in, left: 0in, right: 0in)) 
+
+      let pdf_path = "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".pdf"
+
+      image(pdf_path)
     }
+
   }
 }
 
-#for (sheet, details) in tables_data {
-  table(
-    columns: (auto, 1fr),
-    align: (center, left),
-    table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #sheet#label(sheet)*]],
-    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
-    [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
-    ..details.flatten(),
-  ) 
-
-  pagebreak()
-}
+//#{
+//  for (i, component) in components.enumerate() {
+//    let key = str(component.sheet)
+//
+//    if (key in tables_data) {
+//      tables_data.at(key).push(sheet_rows.at(i))
+//    } else {
+//      tables_data.insert(key, sheet_rows.at(i))
+//    }
+//  }
+//}
+//
+//#for (sheet, details) in tables_data {
+//  table(
+//    columns: (auto, 1fr),
+//    align: (center, left),
+//    table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #sheet#label(sheet)*]],
+//    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
+//    [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
+//    ..details.flatten(),
+//  ) 
+//
+//  pagebreak()
+//}
 
 #if not is_instrument_submittal {
-  table(
-    columns: (auto, 1fr),
-    align: (center, left),
-    table.cell(stroke: (left: none, top: none, right: none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #last_sheet#label(str(last_sheet))*]],
-    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
-    [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
-    [A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R], [Mfg: Phoenix Contact: Terminal Block #linebreak() Model Number: 3044076 #linebreak()
-    #linebreak()
-    Mfg: Phoenix Contact: Grounding Terminal Block #linebreak() Model Number: 3044092 #linebreak()
-    #linebreak()
-    Mfg: Phoenix Contact: Terminal End Barrier #linebreak() Model Number: 3047028 #linebreak()
-    #linebreak()
-    Mfg: Phoenix Contact: Terminal Anchor #linebreak() Model Number: 0800886 #linebreak()
-    #linebreak()
-    Tags / Service: #linebreak() #term_blocks / #service #linebreak()
-    #linebreak()
-    Specifications: #linebreak()
-    #list(
-      indent: 1em,
-       [Feed through and grounding terminals],
-       [Screw clamps], 
-       [End plates and anchors],
-       [DIN rail mount],
-     )
-     #linebreak()
-    ], 
-  )
+    table(
+      columns: (auto, 1fr),
+      align: (center, left),
+      table.cell(stroke: (left: none, top: none, right: none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #last_sheet#label(str(last_sheet))*]],
+      align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
+      [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
+      [A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R], [Mfg: Phoenix Contact: Terminal Block #linebreak() Model Number: 3044076 #linebreak()
+      #linebreak()
+      Mfg: Phoenix Contact: Grounding Terminal Block #linebreak() Model Number: 3044092 #linebreak()
+      #linebreak()
+      Mfg: Phoenix Contact: Terminal End Barrier #linebreak() Model Number: 3047028 #linebreak()
+      #linebreak()
+      Mfg: Phoenix Contact: Terminal Anchor #linebreak() Model Number: 0800886 #linebreak()
+      #linebreak()
+      Tags / Service: #linebreak() #term_blocks / #service #linebreak()
+      #linebreak()
+      Specifications: #linebreak()
+      #list(
+        indent: 1em,
+         [Feed through and grounding terminals],
+         [Screw clamps], 
+         [End plates and anchors],
+         [DIN rail mount],
+       )
+       #linebreak()
+      ], 
+    )
 
-  pagebreak()
-}
+    pagebreak()
+
+    {
+      set page(margin: (top: 0in, bottom: 0in, left: 0in, right: 0in)) 
+
+      let i = 1
+
+      while i < 10 {
+        image("./Submittal_Data_Sheets/Phoenix-Contact/Phoenix Contact Terminal Blocks and Accessories.pdf", page: i)
+        i = i + 1
+      }
+    }
+  }
 
 #if has_heating_calc [
   #align(center)[
