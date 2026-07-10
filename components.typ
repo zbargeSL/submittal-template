@@ -47,9 +47,8 @@
   DS42S_120_G: (sheet: 1, manufacturer: "Citel", qty: 2, tags: ("TVSS",)),
 )
 
-//#let spare_parts = components.filter(comp => comp.catalog == "test2" or comp.catalog == "test")
+#let spare_parts = components.pairs().filter(v => v.at(0) == "DS42S_120_G")
 
 #let spare_parts_qty = (
-  "test": "1",
-  "test2": "2"
+  "DS42S_120_G": "1",
 )

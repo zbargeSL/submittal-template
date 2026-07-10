@@ -184,10 +184,12 @@
 #if has_spare_parts [
   #let spare_parts_rows = ()
 
-  //#for spare_component in spare_parts {
-    //spare_parts_rows.push(parts_row.filter(comp => comp.contains(spare_component.catalog)))
-    //spare_parts_rows.last().push(spare_parts_qty.at(spare_component.catalog))
-  //}
+  #for (part_file, part_data) in spare_parts {
+    import "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".typ": comp as spare
+
+    spare_parts_rows.push(parts_row.filter(comp => comp.contains(spare.catalog)))
+    spare_parts_rows.last().push(spare_parts_qty.at(part_file))
+  }
 
   #align(center)[*#upper(project)*]
 
@@ -217,63 +219,59 @@
 
 #let sheet_rows = ()
 
-//#if is_instrument_submittal{
-//  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #c.service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() ] ))
-//} else {
-//  sheet_rows = components.map((c) => ([#c.qty], [Mfg: #c.manufacturer: #c.description #linebreak() Model Number: #c.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #c.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..c.specs) #linebreak() #c.misc #linebreak()] ))
-//}
-
-//#let tables_data = ("1": ())
-
-#{
+#if is_instrument_submittal{
   for (part_file, part_data) in components {
     import "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".typ": comp
-
-    let sheet_row = ([#part_data.qty], [Mfg: #comp.manufacturer: #comp.description #linebreak() Model Number: #comp.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #part_data.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..comp.specs) #linebreak() #comp.misc #linebreak()] )
-    table(
-      columns: (auto, 1fr),
-      align: (center, left),
-      table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #part_data.sheet#label(str(part_data.sheet))*]],
-      align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
-      [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
-      ..sheet_row.flatten(),
-    ) 
-
-    {
-      set page(margin: (top: 0in, bottom: 0in, left: 0in, right: 0in)) 
-
-      let pdf_path = "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".pdf"
-
-      image(pdf_path)
-    }
-
+    sheet_rows.push(([#part_data.qty], [Mfg: #comp.manufacturer: #comp.description #linebreak() Model Number: #comp.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #part_data.tags.join(", ") / #comp.service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..comp.specs) #linebreak() ] ))
+  }
+} else {
+  for (part_file, part_data) in components {
+    import "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".typ": comp
+    sheet_rows.push(([#part_data.qty], [Mfg: #comp.manufacturer: #comp.description #linebreak() Model Number: #comp.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #part_data.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..comp.specs) #linebreak() #comp.misc #linebreak()] ))
   }
 }
 
-//#{
-//  for (i, component) in components.enumerate() {
-//    let key = str(component.sheet)
-//
-//    if (key in tables_data) {
-//      tables_data.at(key).push(sheet_rows.at(i))
-//    } else {
-//      tables_data.insert(key, sheet_rows.at(i))
-//    }
-//  }
-//}
-//
-//#for (sheet, details) in tables_data {
-//  table(
-//    columns: (auto, 1fr),
-//    align: (center, left),
-//    table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #sheet#label(sheet)*]],
-//    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
-//    [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
-//    ..details.flatten(),
-//  ) 
-//
-//  pagebreak()
-//}
+#let tables_data = ("1": ())
+
+#{
+  let i = 0
+  for (part_file, part_data) in components {
+    import "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".typ": comp
+
+    let key = str(part_data.sheet)
+
+    if (key in tables_data) {
+      tables_data.at(key).push(sheet_rows.at(i))
+    } else {
+      tables_data.insert(key, sheet_rows.at(i))
+    }
+    i = i + 1
+  }
+}
+
+#for (sheet, details) in tables_data {
+  table(
+    columns: (auto, 1fr),
+    align: (center, left),
+    table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #sheet#label(sheet)*]],
+    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
+    [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
+    ..details.flatten(),
+  ) 
+
+  let items_on_sheet = components.pairs().filter((v) => v.at(1).at("sheet") == int(sheet))
+
+
+  for item in items_on_sheet {
+    set page(margin: (top: 0in, bottom: 0in, left: 0in, right: 0in)) 
+
+    let pdf_path = "./Submittal_Data_Sheets/" + item.at(1).at("manufacturer") + "/" + item.at(0) + ".pdf"
+
+    image(pdf_path)
+  }
+
+  pagebreak()
+}
 
 #if not is_instrument_submittal {
     table(
