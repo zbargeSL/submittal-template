@@ -240,34 +240,49 @@
 
     let key = str(part_data.sheet)
 
+    let details = (
+      row: sheet_rows.at(i),
+      pdf_length: comp.pdf_length
+    )
+
     if (key in tables_data) {
-      tables_data.at(key).push(sheet_rows.at(i))
+      tables_data.at(key).push(details)
     } else {
-      tables_data.insert(key, sheet_rows.at(i))
+      tables_data.insert(key, (details,))
     }
     i = i + 1
   }
 }
 
 #for (sheet, details) in tables_data {
+
+  let row_detail = ()
+  for detail in details {
+    row_detail.push(detail.at("row"))
+  }
+
   table(
     columns: (auto, 1fr),
     align: (center, left),
     table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #sheet#label(sheet)*]],
     align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
     [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
-    ..details.flatten(),
+    ..row_detail.flatten(),
   ) 
+
 
   let items_on_sheet = components.pairs().filter((v) => v.at(1).at("sheet") == int(sheet))
 
-
-  for item in items_on_sheet {
+  for (i, item) in items_on_sheet.enumerate() {
     set page(margin: (top: 0in, bottom: 0in, left: 0in, right: 0in)) 
 
     let pdf_path = "./Submittal_Data_Sheets/" + item.at(1).at("manufacturer") + "/" + item.at(0) + ".pdf"
 
-    image(pdf_path)
+    let j = 1
+    while j <= details.at(i).at("pdf_length") {
+      image(pdf_path, page: j)
+      j = j + 1
+    }
   }
 
   pagebreak()
