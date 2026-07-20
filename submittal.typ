@@ -104,8 +104,16 @@
   }
 }
 
-#if is_resubmittal [
+#if submittal_type == RESUBMITTAL and resub_comments.len() > 0 [
   *Resubmittal \##resubmittal_number Comment Confirmations:*
+
+  #for (resub_comment, response) in resub_comments {
+    [+ #resub_comment #linebreak()#linebreak() *Sherwood Logan Response:* #linebreak()#linebreak() #response #linebreak()#linebreak()]
+  }
+]
+
+#if submittal_type == RECORD_SUBMITTAL and resub_comments.len() > 0 [
+  *Record Submittal Comment Confirmations:*
 
   #for (resub_comment, response) in resub_comments {
     [+ #resub_comment #linebreak()#linebreak() *Sherwood Logan Response:* #linebreak()#linebreak() #response #linebreak()#linebreak()]

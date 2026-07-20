@@ -1,16 +1,22 @@
-#let is_resubmittal = false
+#let SUBMITTAL = 0
+#let RESUBMITTAL = 1
+#let RECORD_SUBMITTAL = 2
+
 #let is_instrument_submittal = false
 #let has_spare_parts = true
 #let has_heating_calc = false
 
-#let submittal_type = "Submittal"
+#let submittal_type = RESUBMITTAL
+#let submittal_text = "Submittal"
 
-#if is_resubmittal {
-  submittal_type = "Resubmittal"
-}
+#if submittal_type == RESUBMITTAL {
+  submittal_text = "Resubmittal"
+} else if submittal_type == RECORD_SUBMITTAL {
+  submittal_text = "Record Submittal"
+} 
 
 #let project = "project"
-#let purpose = [#underline[*purpose #submittal_type*]]
+#let purpose = [#underline[*purpose #submittal_text*]]
 #let spec_section = "spec section"
 #let engineer = "engineer"
 #let contractor = "contractor"
