@@ -4,19 +4,19 @@
 
 #set text(
   size: 14pt,
-  font: "Times New Roman"
+  font: "Times New Roman",
 )
 
 #set page(
   header: context {
-      if here().page() == 1 [
-        #image("./common/images/SL_Header.png", width: 100%)
-      ]
+    if here().page() == 1 [
+      #image("./common/images/SL_Header.png", width: 100%)
+    ]
   },
   footer: context {
     if here().page() == 1 [
-     #image("./common/images/SL_Footer.png", width: 100%)
-   ]
+      #image("./common/images/SL_Footer.png", width: 100%)
+    ]
   },
   paper: "us-letter",
 )
@@ -25,11 +25,11 @@
 
 #{
   set page(
-    margin: (top: 2in, bottom: 2in)
+    margin: (top: 2in, bottom: 2in),
   )
 
   align(center)[
-    #upper[*#project*] 
+    #upper[*#project*]
 
     #linebreak()
     #upper[#purpose]
@@ -43,9 +43,9 @@
   ]
 
   align(bottom)[
-  *ENGINEER: #upper[#engineer]*
+    *ENGINEER: #upper[#engineer]*
 
-  *CONTRACTOR: #upper[#contractor]*
+    *CONTRACTOR: #upper[#contractor]*
   ]
 }
 
@@ -59,7 +59,7 @@
 
 #if comments.len() > 0 or is_resubmittal {
   linebreak()
-  link(<Comments>)[*Comments*] 
+  link(<Comments>)[*Comments*]
 }
 
 #linebreak()
@@ -71,7 +71,7 @@
 ]
 
 #linebreak()
-#link(<DataSheets>)[*Data Sheets*] 
+#link(<DataSheets>)[*Data Sheets*]
 
 #if has_heating_calc [
   #linebreak()
@@ -109,7 +109,9 @@
   *Resubmittal \##resubmittal_number Comment Confirmations:*
 
   #for (resub_comment, response) in resub_comments {
-    [+ #resub_comment #linebreak()#linebreak() *Sherwood Logan Response:* #linebreak()#linebreak() #response #linebreak()#linebreak()]
+    [
+      + #resub_comment #linebreak()#linebreak() *Sherwood Logan Response:* #linebreak()#linebreak() #response #linebreak()#linebreak()
+    ]
   }
 ]
 
@@ -136,10 +138,10 @@
     cat = comp.catalog
 
     if test_cat.len() > 20 {
-      let num_breaks = calc.trunc(test_cat.len()/20)
+      let num_breaks = calc.trunc(test_cat.len() / 20)
       let i = 1
       while i <= num_breaks {
-        test_cat = test_cat.slice(0, count:i*20) + sym.zws + test_cat.slice(i*20)
+        test_cat = test_cat.slice(0, count: i * 20) + sym.zws + test_cat.slice(i * 20)
         i = i + 1
       }
     }
@@ -148,10 +150,10 @@
     parts_row.push(comp)
     last_sheet = part_data.sheet + 1
   }
-    let uni
-    for char in test_cat {
-      uni = char.to-unicode()
-    }
+  let uni
+  for char in test_cat {
+    uni = char.to-unicode()
+  }
 }
 
 
@@ -161,7 +163,7 @@
   if not is_instrument_submittal {
     table(
       columns: (auto, 1fr, 1fr, 1fr),
-      align:(center + horizon), 
+      align: (center + horizon),
       table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
       ..parts_row.flatten(),
       [#link(label(str(last_sheet)))[#last_sheet]], [Phoenix Contact], [3044076], [Terminal Block],
@@ -172,7 +174,7 @@
   } else {
     table(
       columns: (auto, 1fr, 1fr, 1fr),
-      align:(center + horizon), 
+      align: (center + horizon),
       table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*]),
       ..parts_row.flatten(),
     )
@@ -204,7 +206,7 @@
 
     table(
       columns: (auto, 1fr, 1fr, 1fr, 1fr),
-      align:(center + horizon), 
+      align: (center + horizon),
       table.header([*SHT*], [*MANUFACTURER*], [*MODEL*], [*DESCRIPTION*], [*QTY*]),
       ..spare_parts_rows.flatten(),
     )
@@ -219,15 +221,21 @@
 
 #let sheet_rows = ()
 
-#if is_instrument_submittal{
+#if is_instrument_submittal {
   for (part_file, part_data) in components {
     import "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".typ": comp
-    sheet_rows.push(([#part_data.qty], [Mfg: #comp.manufacturer: #comp.description #linebreak() Model Number: #comp.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #part_data.tags.join(", ") / #comp.service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..comp.specs) #linebreak() ] ))
+    sheet_rows.push((
+      [#part_data.qty],
+      [Mfg: #comp.manufacturer: #comp.description #linebreak() Model Number: #comp.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #part_data.tags.join(", ") / #comp.service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..comp.specs) #linebreak() ],
+    ))
   }
 } else {
   for (part_file, part_data) in components {
     import "./Submittal_Data_Sheets/" + part_data.manufacturer + "/" + part_file + ".typ": comp
-    sheet_rows.push(([#part_data.qty], [Mfg: #comp.manufacturer: #comp.description #linebreak() Model Number: #comp.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #part_data.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..comp.specs) #linebreak() #comp.misc #linebreak()] ))
+    sheet_rows.push((
+      [#part_data.qty],
+      [Mfg: #comp.manufacturer: #comp.description #linebreak() Model Number: #comp.catalog #linebreak() #linebreak() Tags/Service: #linebreak() #part_data.tags.join(", ") / #service #linebreak() #linebreak() Specifications: #linebreak() #list(indent: 1em, ..comp.specs) #linebreak() #comp.misc #linebreak()],
+    ))
   }
 }
 
@@ -242,7 +250,7 @@
 
     let details = (
       row: sheet_rows.at(i),
-      pdf_length: comp.pdf_length
+      pdf_length: comp.pdf_length,
     )
 
     if (key in tables_data) {
@@ -255,7 +263,6 @@
 }
 
 #for (sheet, details) in tables_data {
-
   let row_detail = ()
   for detail in details {
     row_detail.push(detail.at("row"))
@@ -264,17 +271,18 @@
   table(
     columns: (auto, 1fr),
     align: (center, left),
-    table.cell(stroke: (left: none, top: none, right:none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #sheet#label(sheet)*]],
-    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
+    table.cell(stroke: (left: none, top: none, right: none))[],
+    table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #sheet#label(sheet)*]],
+    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ],
+    [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
     [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
     ..row_detail.flatten(),
-  ) 
+  )
 
-
-  let items_on_sheet = components.pairs().filter((v) => v.at(1).at("sheet") == int(sheet))
+  let items_on_sheet = components.pairs().filter(v => v.at(1).at("sheet") == int(sheet))
 
   for (i, item) in items_on_sheet.enumerate() {
-    set page(margin: (top: 0in, bottom: 0in, left: 0in, right: 0in)) 
+    set page(margin: (top: 0in, bottom: 0in, left: 0in, right: 0in))
 
     let pdf_path = "./Submittal_Data_Sheets/" + item.at(1).at("manufacturer") + "/" + item.at(0) + ".pdf"
 
@@ -289,13 +297,18 @@
 }
 
 #if not is_instrument_submittal {
-    table(
-      columns: (auto, 1fr),
-      align: (center, left),
-      table.cell(stroke: (left: none, top: none, right: none))[], table.cell(stroke: (left: none, top: none, right: none))[#align(right)[*Data Sheet #last_sheet#label(str(last_sheet))*]],
-      align(left)[Customer: #linebreak() Reference: #linebreak() Date: ], [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
-      [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
-      [A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R], [Mfg: Phoenix Contact: Terminal Block #linebreak() Model Number: 3044076 #linebreak()
+  table(
+    columns: (auto, 1fr),
+    align: (center, left),
+    table.cell(stroke: (left: none, top: none, right: none))[],
+    table.cell(stroke: (left: none, top: none, right: none))[#align(
+      right,
+    )[*Data Sheet #last_sheet#label(str(last_sheet))*]],
+    align(left)[Customer: #linebreak() Reference: #linebreak() Date: ],
+    [#contractor #linebreak() #reference #linebreak() #datetime.today().display("[month]/[day]/[year]")],
+    [#underline[Qty] #linebreak()#linebreak()], [#underline[Description] #linebreak()#linebreak()],
+    [A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R #linebreak()#linebreak()#linebreak() A/R],
+    [Mfg: Phoenix Contact: Terminal Block #linebreak() Model Number: 3044076 #linebreak()
       #linebreak()
       Mfg: Phoenix Contact: Grounding Terminal Block #linebreak() Model Number: 3044092 #linebreak()
       #linebreak()
@@ -308,28 +321,28 @@
       Specifications: #linebreak()
       #list(
         indent: 1em,
-         [Feed through and grounding terminals],
-         [Screw clamps], 
-         [End plates and anchors],
-         [DIN rail mount],
-       )
-       #linebreak()
-      ], 
-    )
+        [Feed through and grounding terminals],
+        [Screw clamps],
+        [End plates and anchors],
+        [DIN rail mount],
+      )
+      #linebreak()
+    ],
+  )
 
-    pagebreak()
+  pagebreak()
 
-    {
-      set page(margin: (top: 0in, bottom: 0in, left: 0in, right: 0in)) 
+  {
+    set page(margin: (top: 0in, bottom: 0in, left: 0in, right: 0in))
 
-      let i = 1
+    let i = 1
 
-      while i < 10 {
-        image("./Submittal_Data_Sheets/Phoenix-Contact/Phoenix Contact Terminal Blocks and Accessories.pdf", page: i)
-        i = i + 1
-      }
+    while i < 10 {
+      image("./Submittal_Data_Sheets/Phoenix Contact/Phoenix Contact Terminal Blocks and Accessories.pdf", page: i)
+      i = i + 1
     }
   }
+}
 
 #if has_heating_calc [
   #align(center)[
@@ -338,25 +351,22 @@
 
   *Heating and Cooling Sizes:*<HeatingAndCoolingSizes>
 
-  #align(center,
-  [
+  #align(center, [
     #table(
       columns: (auto, 40%),
-      inset: (x, y) =>
-        if x == 0 and y <= heat_dissapated.len() { (right: 2em, left: 0% + 5pt, top: 0% + 5pt, bottom: 0% + 5pt) } else { 0% + 5pt },  
-      align: (x, y) =>
-        if y < heat_dissapated.len() and x == 0 {left}
-        else if x > 0 { center } else { right }
-      ,
+      inset: (x, y) => if x == 0 and y <= heat_dissapated.len() {
+        (right: 2em, left: 0% + 5pt, top: 0% + 5pt, bottom: 0% + 5pt)
+      } else { 0% + 5pt },
+      align: (x, y) => if y < heat_dissapated.len() and x == 0 { left } else if x > 0 { center } else { right },
       stroke: (x, y) => (
         top: if y == 0 or (y == heat_dissapated.len() + 1 and x == 1) { 1pt },
         right: if x == 1 { 1pt },
         left: if x == 0 { 1pt },
-        bottom: if y == 0 or y == heat_dissapated.len() + 1 { 1pt }
+        bottom: if y == 0 or y == heat_dissapated.len() + 1 { 1pt },
       ),
       [ Device #linebreak() #linebreak() ], [ HEAT DISSIPATED #linebreak() (BTU/Hr) #linebreak() ],
       ..heat_dissapated.pairs().flatten(),
-      [Total], [#heat_dissapated.values().map(val => float(val)).sum()]
+      [Total], [#heat_dissapated.values().map(val => float(val)).sum()],
     )
   ])
 
@@ -379,7 +389,7 @@
       columns: (1fr, 3fr),
       align: (center, left),
       table.header(align(left)[*Drawing Number*], [*Drawing Description*]),
-      ..drawings.pairs().flatten()
+      ..drawings.pairs().flatten(),
     )
   }
 
