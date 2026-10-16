@@ -86,15 +86,15 @@
   #link(<Drawings>)[*Drawings*]
 ]
 
-#if comments.len() > 0 or is_resubmittal {
-  linebreak()
-  linebreak()
-  pagebreak()
+#if comments.len() > 0 or is_resubmittal [
+  #linebreak()
+  #linebreak()
+  #pagebreak()
 
-  align(center)[
+  #align(center)[
     #upper[*#project*] <Comments>
   ]
-}
+]
 
 #if comments.len() > 0 {
   [*General Comments:*]
